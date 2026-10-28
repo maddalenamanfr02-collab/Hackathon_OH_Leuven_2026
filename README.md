@@ -2,7 +2,7 @@
 
 Participants: 
 - Maddalena Manfredi 
-- 
+- Kirti Jain
 - 
 - 
 
