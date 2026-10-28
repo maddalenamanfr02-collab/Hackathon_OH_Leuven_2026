@@ -110,3 +110,69 @@ def serve(store_dir: Path, port: int = 8000) -> None:
     httpd = ThreadingHTTPServer(("127.0.0.1", port), make_handler(store_dir))
     print(f"MSF Document Retrieval UI on http://127.0.0.1:{port}  (Ctrl+C to stop)")
     httpd.serve_forever()
+
+
+# --- Static frontend server (serves the colleague's index.html + app.js) ------
+
+_STATIC_TYPES = {
+    ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
+    ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml",
+    ".json": "application/json", ".pdf": "application/pdf",
+    ".png": "image/png", ".ico": "image/x-icon",
+}
+
+
+def make_static_handler(web_root: Path, store_dir: Path):
+    renderings = store_dir / "renderings"
+    root = web_root.resolve()
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_GET(self):
+            parsed = urllib.parse.urlparse(self.path)
+            path = urllib.parse.unquote(parsed.path)
+
+            # Open an original rendering by id (kept from the API design).
+            if path.startswith("/doc/"):
+                doc_id = path[len("/doc/"):]
+                match = next((p for p in renderings.glob(f"{doc_id}.*")), None)
+                if not match:
+                    self._send(404, b"Document unavailable (no stored rendering).",
+                               "text/plain; charset=utf-8")
+                    return
+                ctype = "application/pdf" if match.suffix == ".pdf" else "text/html; charset=utf-8"
+                self._send(200, match.read_bytes(), ctype)
+                return
+
+            rel = path.lstrip("/") or "index.html"
+            target = (root / rel).resolve()
+            # Prevent path traversal outside the web root.
+            if root not in target.parents and target != root:
+                self._send(403, b"Forbidden", "text/plain")
+                return
+            if not target.is_file():
+                self._send(404, b"Not found", "text/plain")
+                return
+            ctype = _STATIC_TYPES.get(target.suffix.lower(), "application/octet-stream")
+            self._send(200, target.read_bytes(), ctype)
+
+        def _send(self, code, data, ctype):
+            self.send_response(code)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+
+    return Handler
+
+
+def serve_static(web_root: Path, store_dir: Path, port: int = 8000) -> None:
+    res = verify_integrity(store_dir)
+    if not res.ok:
+        raise SystemExit(f"Local_Store failed integrity check: {res.message}")
+    ThreadingHTTPServer.allow_reuse_address = True
+    httpd = ThreadingHTTPServer(("127.0.0.1", port), make_static_handler(web_root, store_dir))
+    print(f"MSF Library UI on http://127.0.0.1:{port}  (serving {web_root}, Ctrl+C to stop)")
+    httpd.serve_forever()

@@ -12,6 +12,7 @@ from .store import verify_integrity
 DEFAULT_CORPUS = Path("shared_documents/D4GC data/D4GC data")
 DEFAULT_CSV = Path("shared_documents/documentation.csv")
 DEFAULT_STORE = Path("local_store")
+DEFAULT_UI_DATA = Path("documents.js")
 
 
 def main(argv=None) -> int:
@@ -37,11 +38,20 @@ def main(argv=None) -> int:
     pserve = sub.add_parser("serve", help="launch the minimal web UI")
     pserve.add_argument("--store", type=Path, default=DEFAULT_STORE)
     pserve.add_argument("--port", type=int, default=8000)
+    pserve.add_argument("--web-root", type=Path, default=Path("."),
+                        help="directory containing index.html/app.js")
+
+    pe = sub.add_parser("export", help="write documents.js for the web UI")
+    pe.add_argument("--store", type=Path, default=DEFAULT_STORE)
+    pe.add_argument("--out", type=Path, default=DEFAULT_UI_DATA)
 
     args = parser.parse_args(argv)
 
     if args.cmd == "build":
         stats = run_ingestion(args.csv, args.corpus, args.store, limit=args.limit)
+        from .export_ui import export as _export_ui
+        count = _export_ui(args.store, DEFAULT_UI_DATA)
+        stats["ui_records"] = count
         print(json.dumps(stats, indent=2))
         return 0
 
@@ -68,8 +78,25 @@ def main(argv=None) -> int:
         return 0
 
     if args.cmd == "serve":
-        from .web import serve
-        serve(args.store, args.port)
+        from .web import serve_static
+        from .export_ui import export as _export_ui
+        # Refresh the UI data bridge so the static frontend shows current data.
+        ui_file = args.web_root / "documents.js"
+        try:
+            _export_ui(args.store, ui_file)
+        except Exception as exc:  # non-fatal: stale documents.js still works
+            print(f"warning: could not refresh {ui_file}: {exc}")
+        serve_static(args.web_root, args.store, args.port)
+        return 0
+
+    if args.cmd == "export":
+        from .export_ui import export as _export_ui
+        res = verify_integrity(args.store)
+        if not res.ok:
+            print(f"Refusing to export: {res.message}")
+            return 1
+        count = _export_ui(args.store, args.out)
+        print(f"Wrote {count} records to {args.out}")
         return 0
 
     return 1

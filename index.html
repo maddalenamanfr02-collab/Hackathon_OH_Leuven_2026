@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medecines Sans Frontiers Libraryy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="documents.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#search">Skip to content</a>
+    <!-- Navigation preserves the inputs while moving between sections. -->
+    <header>
+      <div class="brand"><img class="brand-logo" src="medecins-sans-frontieres-logo-vector.svg" alt="Médecins Sans Frontières">Medecines Sans Frontiers Library</div>
+      <nav aria-label="Main">
+        <a href="#search">Search</a>
+        <a href="#import">Import</a>
+        <a href="#documents">Documents</a>
+      </nav>
+    </header>
+    <main>
+      <!-- Search controls work against the collection supplied to app.js. -->
+      <section id="search">
+        <h1>Find the information you need.</h1>
+        <p class="muted">Search your local collection of clinical guidance and research.</p>
+        <form id="search-form">
+          <label for="query" class="field">Search documents</label>
+          <div class="query">
+            <input id="query" type="search" placeholder="Enter a topic or keyword" maxlength="1000" required>
+            <button class="primary" type="submit">Search</button>
+          </div>
+        </form>
+        <div class="layout">
+          <aside class="panel filters">
+            <details open>
+              <summary>Refine results</summary>
+              <h3>Language</h3>
+              <label><input type="checkbox" name="language" value="en">English</label>
+              <label><input type="checkbox" name="language" value="fr">French</label>
+              <label><input type="checkbox" name="language" value="ar">Arabic</label>
+              <label><input type="checkbox" name="language" value="es">Spanish</label>
+              <label><input type="checkbox" name="language" value="und">Unknown</label>
+              <h3>Document type</h3>
+              <div id="genre-filters"></div>
+              <p class="help">Document types are populated from the connected collection.</p>
+              <button id="clear-filters" type="button">Clear filters</button>
+            </details>
+          </aside>
+          <div>
+            <p id="search-status" role="status">Enter a topic or keyword to begin.</p>
+            <div id="results"></div>
+            <div class="foot">
+              <span id="page-status" class="help">No results to display</span>
+              <div>
+                <button id="previous" type="button" disabled>Previous</button>
+                <button id="next" type="button" disabled>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- File selection is local; processing requires a connected service. -->
+      <section id="import">
+        <div class="eyebrow">Collection stewardship</div>
+        <h1>Add documents to your library.</h1>
+        <div class="panel">
+          <label class="field" for="files">Choose PDF or HTML documents</label>
+          <input id="files" type="file" accept=".pdf,.html,.htm" multiple>
+          <ul id="file-list"></ul>
+          <p class="help">Local processing is unavailable until a document service is connected. Selected files are not uploaded.</p>
+          <button class="primary" disabled>Start processing</button>
+        </div>
+      </section>
+      <!-- An empty collection has no editable record selected. -->
+      <section id="documents">
+        <div class="eyebrow">Collection stewardship</div>
+        <h1>Keep your collection useful.</h1>
+        <div class="panel">
+          <label class="field" for="find">Find a managed document</label>
+          <input id="find" type="search" placeholder="Filter by title">
+          <p id="documents-status" role="status">No documents connected.</p>
+          <div id="document-list"></div>
+        </div>
+      </section>
+    </main>
+    <footer>D4GC Field Library</footer>
+  </body>
+</html>
