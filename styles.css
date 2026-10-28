@@ -401,3 +401,98 @@ footer {
   }
 }
 
+
+/* --- Horizontal filter bar with collapsible dropdown menus --------------- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 8px;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid #e5dada;
+  border-radius: 10px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  padding: 9px 16px;
+  border: 1px solid #e5dada;
+  border-radius: 8px;
+  background: #faf7f7;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown > summary::-webkit-details-marker { display: none; }
+.dropdown > summary::after { content: "\25BE"; color: #b80000; font-size: 12px; }
+.dropdown[open] > summary { border-color: #b80000; color: #b80000; }
+.dropdown > summary:hover { border-color: #b80000; }
+
+.dropdown .count {
+  color: #b80000;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e5dada;
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(40, 20, 20, .14);
+}
+
+.dropdown-menu label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dropdown-menu label:hover { background: #faf2f2; }
+.dropdown-menu input { width: auto; margin: 0; accent-color: #b80000; }
+
+.filter-bar #clear-filters {
+  margin-left: auto;
+  padding: 9px 16px;
+  border: 1px solid #e5dada;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+.filter-bar #clear-filters:hover { border-color: #b80000; color: #b80000; }
+
+.card-meta {
+  color: #b80000 !important;
+  font-size: 13px !important;
+  font-weight: 600;
+  margin: 2px 0 6px !important;
+}
+
+@media (max-width: 420px) {
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .dropdown > summary { width: 100%; justify-content: space-between; }
+  .dropdown-menu { position: static; width: 100%; }
+  .filter-bar #clear-filters { margin-left: 0; }
+}

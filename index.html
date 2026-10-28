@@ -23,40 +23,37 @@
       <!-- Search controls work against the collection supplied to app.js. -->
       <section id="search">
         <h1>Find the information you need.</h1>
-        <p class="muted">Search your local collection of clinical guidance and research.</p>
+        <p class="muted">Browse your local collection of clinical guidance and research. Use the filters to narrow it down.</p>
         <form id="search-form">
           <label for="query" class="field">Search documents</label>
           <div class="query">
-            <input id="query" type="search" placeholder="Enter a topic or keyword" maxlength="1000" required>
+            <input id="query" type="search" placeholder="Enter a topic or keyword (optional)" maxlength="1000">
             <button class="primary" type="submit">Search</button>
           </div>
         </form>
-        <div class="layout">
-          <aside class="panel filters">
-            <details open>
-              <summary>Refine results</summary>
-              <h3>Language</h3>
-              <label><input type="checkbox" name="language" value="en">English</label>
-              <label><input type="checkbox" name="language" value="fr">French</label>
-              <label><input type="checkbox" name="language" value="ar">Arabic</label>
-              <label><input type="checkbox" name="language" value="es">Spanish</label>
-              <label><input type="checkbox" name="language" value="und">Unknown</label>
-              <h3>Document type</h3>
-              <div id="genre-filters"></div>
-              <p class="help">Document types are populated from the connected collection.</p>
-              <button id="clear-filters" type="button">Clear filters</button>
-            </details>
-          </aside>
+        <!-- Horizontal filter bar: each control is a collapsible dropdown. -->
+        <div class="filter-bar" id="filter-bar">
+          <details class="dropdown">
+            <summary>Location <span class="count" data-group="location"></span></summary>
+            <div class="dropdown-menu" id="location-filters"></div>
+          </details>
+          <details class="dropdown">
+            <summary>Document type <span class="count" data-group="genre"></span></summary>
+            <div class="dropdown-menu" id="genre-filters"></div>
+          </details>
+          <details class="dropdown">
+            <summary>Language <span class="count" data-group="language"></span></summary>
+            <div class="dropdown-menu" id="language-filters"></div>
+          </details>
+          <button id="clear-filters" type="button">Clear filters</button>
+        </div>
+        <p id="search-status" role="status">Loading your collection…</p>
+        <div id="results"></div>
+        <div class="foot">
+          <span id="page-status" class="help">No results to display</span>
           <div>
-            <p id="search-status" role="status">Enter a topic or keyword to begin.</p>
-            <div id="results"></div>
-            <div class="foot">
-              <span id="page-status" class="help">No results to display</span>
-              <div>
-                <button id="previous" type="button" disabled>Previous</button>
-                <button id="next" type="button" disabled>Next</button>
-              </div>
-            </div>
+            <button id="previous" type="button" disabled>Previous</button>
+            <button id="next" type="button" disabled>Next</button>
           </div>
         </div>
       </section>
