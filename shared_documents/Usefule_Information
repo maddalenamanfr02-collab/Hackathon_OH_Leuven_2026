@@ -1,0 +1,99 @@
+Challenge Emergent
+
+ARTSEN ZONDER GRENZEN
+An international independent medical humanitarian organization
+-	Tens of thousand of professionals
+-	Work everywhere, they go were they need to go
+-	98% of our income come from 7.3 million private donors -> ensures independence
+o	80% social missions
+o	Fundraising
+o	Smal part goes to management
+DATA
+•	16,459,000 outpatient consultations
+•	3,724,500 malaria cases treated
+•	3,295,700 vaccinations against measles in response to an outbreak
+•	1,946,300 emergency room admissions
+•	1,368,700 patients admitted
+•	499,500 malnourished children admitted to outpatient feeding programmes
+•	493,900 individual mental health consultations
+•	462,200 families received relief items
+•	337,000 births assisted, including caesarean sections
+•	161,000 severely malnourished children admitted to inpatient feeding programmes
+•	125,900 surgical interventions requiring anaesthesia
+•	70,600 patients treated for cholera
+•	62,200 people treated for sexual violence
+•	44,500 people received HIV antiretroviral treatment
+•	23,000 people with advanced HIV received MSF care
+•	22,700 people started first-line tuberculosis treatment
+•	5,810 people started hepatitis C treatment
+•	4,650 people rescued at sea
+X-ray
+69000+ people (89% social mission) In the organization
+Everyone produces documents, slides, data, every single day
+-	Doctors define and maintain new protocols
+-	Logisticians write their own manuals
+-	Epidemiologists publish peer-reviewed articles
+We are overwhelmed with information
+Receive the same information, but how do we know which information is most correct?
+Sometimes there is no internet for multiple days -> connection?
+Own on-site hardware
+-	Water-prove
+-	Sand-prove
+-	Snake-prove
+-	When you move a server to another place it can be rough (rivers, desserts, mud, …)
+We have constrains our own software
+-	Our solutions must be resilient
+-	Intermittent internet connection
+-	Various level of digital literacy
+-	Built for the field
+-	They try to hire local people -> dokters there learn different, use other technique, they don’t know the digital material, train them
+-	Data should come fast -> when a chirurg is doing an operation he needs information fast
+
+WHAT IS OUR CHALLENGE
+We want to make the best decisions based on our information.
+We have poor document lifecycle management.
+We work in low-resource settings.
+Our standards are specific to our needs.
+We care about:
+-	Protecting confidential information
+-	Our efficiency
+-	Maintainability over the years
+-	Our costs
+
+
+
+
+
+
+
+Design a cost-effective document retrieval system that works with intermittent internet access. Help MSF staff quickly find the right information  when operationg during humanitarian crises.
+•	You have access to 600 different MSF documents.
+•	Each document is stored in two formats: HTML/PDF or plain text.
+•	The documents are enriched with basic information in one CSV file.
+•	Show how you would create value from this information in an MSF context.
+•	For the hackathon, all provided documents are publicly available
+
+1.	Think outside the box and bring creativity
+2.	You will have time for challenge from 14-18
+3.	Make sure to upload your pithc as pdf and your code as zip for each upload section
+4.	We will have 5 different prizes
+5.	The “best overall” group will pitch for everyone for 7 minutes
+EMERGENTLEUVEN.BE/GO/CHALLENGE
+
+QUESTIONS
+capacity local storage?
+Database: 1TB of data, local LLM could run but not everywhere
+	How long do they have no connection
+FEW WEEKS, maximum delay of 5 hours
+Should we also look int improving the connection? Starlink -> improve connection?
+Dependent on one person -> don’t want to be dependent on him
+Do they use google cloud or their own servers?
+Do they already have solutions when electricity falls out?
+YES but can fail, add a battery?
+FIELD: 
+COUNTRY level: 
+MICROSOFT: global: fabric 
+GDPR: regulation, depends on the courty -> 
+Files are messy ->
+Every document has an ID and is part of this country
+Build a smarter layer
