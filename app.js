@@ -28,8 +28,9 @@ function documentCard(record) {
   title.dir = 'auto';
   if (record.id) {
     const link = document.createElement('a');
-    link.href = `/doc/${encodeURIComponent(record.id)}`;
-    link.target = '_blank';
+    link.href = `/doc/${encodeURIComponent(record.id)}?download=1`;
+    // Trigger a file download rather than opening the document in a tab.
+    link.setAttribute('download', '');
     link.rel = 'noopener';
     link.textContent = record.title || 'Title unavailable';
     title.append(link);
