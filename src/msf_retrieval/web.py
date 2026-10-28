@@ -31,10 +31,10 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <h1>👩‍⚕️ MSF Document Retrieval <span class="meta">offline-first</span></h1>
 <p class="banner">Served entirely from local data — works without internet.</p>
 <form method="get" action="/">
- <input type="search" name="q" placeholder="Search guidelines, reports, field accounts…" value="{q}" autofocus>
+ <input type="search" name="q" placeholder="Search guidelines, reports, field accounts…" value="__Q__" autofocus>
  <button type="submit">Search</button>
 </form>
-{body}
+__BODY__
 </body></html>"""
 
 
@@ -71,7 +71,7 @@ def make_handler(store_dir: Path):
                 body = ""
                 if q:
                     body = _render_results(engine.search(q, Filters()))
-                page = PAGE.format(q=html.escape(q), body=body)
+                page = PAGE.replace("__Q__", html.escape(q)).replace("__BODY__", body)
                 self._send(200, page, "text/html; charset=utf-8")
             elif parsed.path.startswith("/doc/"):
                 doc_id = urllib.parse.unquote(parsed.path[len("/doc/"):])
@@ -106,6 +106,7 @@ def serve(store_dir: Path, port: int = 8000) -> None:
     res = verify_integrity(store_dir)
     if not res.ok:
         raise SystemExit(f"Local_Store failed integrity check: {res.message}")
+    ThreadingHTTPServer.allow_reuse_address = True
     httpd = ThreadingHTTPServer(("127.0.0.1", port), make_handler(store_dir))
     print(f"MSF Document Retrieval UI on http://127.0.0.1:{port}  (Ctrl+C to stop)")
     httpd.serve_forever()
