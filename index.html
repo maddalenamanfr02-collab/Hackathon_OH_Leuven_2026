@@ -6,6 +6,7 @@
     <title>Medecines Sans Frontiers Libraryy</title>
     <link rel="stylesheet" href="styles.css">
     <script src="documents.js" defer></script>
+    <script src="Upload Function/upload-controller.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -16,6 +17,7 @@
       <nav aria-label="Main">
         <a href="#search">Search</a>
         <a href="#import">Import</a>
+        <a href="#upload">Upload</a>
       </nav>
     </header>
     <main>
@@ -66,6 +68,31 @@
           <ul id="file-list"></ul>
           <button id="upload-btn" class="primary" type="button" disabled>Upload and index</button>
           <p id="upload-status" class="help" role="status">Select one or more PDF or HTML files to add them to your local library.</p>
+        </div>
+      </section>
+      <!-- Upload one document with explicit metadata (name/title/date). -->
+      <section id="upload">
+        <div class="eyebrow">Collection stewardship</div>
+        <h1>Upload a document with details.</h1>
+        <div class="panel">
+          <form id="upload-form">
+            <label class="field" for="up-file">File</label>
+            <input id="up-file" name="file" type="file" accept=".pdf,.html,.htm" required>
+            <p class="help">One PDF or HTML document, up to 20 MB.</p>
+
+            <label class="field" for="up-name">Name</label>
+            <input id="up-name" name="name" type="text" required>
+
+            <label class="field" for="up-title">Title</label>
+            <input id="up-title" name="title" type="text" required>
+
+            <label class="field" for="up-date">Date</label>
+            <input id="up-date" name="date" type="date" min="1900-01-01" max="2099-12-31" required aria-describedby="up-date-help">
+            <p id="up-date-help" class="help">Recorded as YYYY-MM-DD.</p>
+
+            <button id="up-submit" class="primary" type="submit">Upload and index</button>
+          </form>
+          <p id="up-status" class="help" role="status">All three fields are required. The file is saved to the library and indexed for search.</p>
         </div>
       </section>
     </main>

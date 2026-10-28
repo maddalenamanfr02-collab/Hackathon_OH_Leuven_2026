@@ -32,6 +32,7 @@ class DocumentRecord:
     logical_identity: str = ""
     is_authoritative: bool = True
     schema_version: int = SCHEMA_VERSION
+    title: str = ""  # optional human-provided title (e.g. from upload)
     # provenance, not part of the required schema
     enrichment_source: str = ""
     text_source: str = ""

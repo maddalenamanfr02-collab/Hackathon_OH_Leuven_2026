@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload metadata</title>
+  <script src="upload-controller.js" defer></script>
+  <script src="upload-local-storage.js" defer></script>
+  <script src="upload-metadata.js" defer></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem auto; padding: 0 1rem; max-width: 32rem; color: #202020; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input, button { box-sizing: border-box; font: inherit; padding: .75rem; min-height: 44px; }
+    input { width: 100%; margin-top: .4rem; }
+    button { margin-top: 1rem; cursor: pointer; }
+    :focus-visible { outline: 3px solid #175fc1; outline-offset: 3px; }
+    .help { color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Document details</h1>
+  <p>All three fields are required.</p>
+  <form id="upload-metadata">
+    <button id="choose-folder" type="button">Choose local folder</button>
+    <p id="folder-status" role="status">No folder selected.</p>
+    <label for="document-file">File</label>
+    <input id="document-file" name="file" type="file" accept=".pdf,.html,.htm" required>
+    <p class="help">One PDF or HTML document per upload, up to 20 MB.</p>
+    <label for="document-name">Name</label>
+    <input id="document-name" name="name" required>
+    <label for="document-title">Title</label>
+    <input id="document-title" name="title" required>
+    <label for="document-date">Date</label>
+    <input id="document-date" name="date" type="date" min="0001-01-01" max="9999-12-31" required aria-describedby="date-help">
+    <button id="choose-date" type="button" hidden>Choose date from calendar</button>
+    <p id="date-help" class="help">Open the calendar and browse to your date. Your selection is recorded as YYYY-MM-DD.</p>
+    <button id="upload-button" type="submit" disabled>Upload to local folder</button>
+  </form>
+  <p id="metadata-status" role="status"></p>
+  <p class="help">The original file and its metadata are saved in your chosen folder on this computer. Choose the folder again when you reopen this page.</p>
+</body>
+</html>

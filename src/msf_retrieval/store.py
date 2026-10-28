@@ -52,7 +52,7 @@ def build_store(store_dir: Path, records: list[DocumentRecord],
           sensitivity_label TEXT NOT NULL DEFAULT 'public',
           document_version TEXT, logical_identity TEXT,
           is_authoritative INTEGER NOT NULL, schema_version INTEGER NOT NULL,
-          text_source TEXT
+          text_source TEXT, title TEXT
         );
         CREATE INDEX idx_logical ON documents(logical_identity);
         CREATE INDEX idx_sens ON documents(sensitivity_label);
@@ -66,11 +66,11 @@ def build_store(store_dir: Path, records: list[DocumentRecord],
     )
     for rec in records:
         conn.execute(
-            "INSERT OR REPLACE INTO documents VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "INSERT OR REPLACE INTO documents VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (rec.id, rec.genre, rec.language, rec.location, rec.date, rec.author,
              rec.subcategory, json.dumps(rec.keywords), rec.sensitivity_label,
              rec.document_version, rec.logical_identity, int(rec.is_authoritative),
-             rec.schema_version, rec.text_source),
+             rec.schema_version, rec.text_source, rec.title),
         )
         conn.execute(
             "INSERT INTO documents_fts (id, searchable_text, genre, language, "

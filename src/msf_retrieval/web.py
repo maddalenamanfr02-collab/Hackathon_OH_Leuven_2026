@@ -138,6 +138,23 @@ def _parse_multipart(body: bytes, content_type: str):
             yield filename, part.get_payload(decode=True) or b""
 
 
+def _parse_fields(body: bytes, content_type: str):
+    """Return a dict of non-file form fields (name -> value) from multipart."""
+    import email
+    from email.policy import default as default_policy
+    header = f"Content-Type: {content_type}\r\nMIME-Version: 1.0\r\n\r\n".encode()
+    msg = email.message_from_bytes(header + body, policy=default_policy)
+    fields = {}
+    for part in msg.iter_parts() if msg.is_multipart() else []:
+        if part.get_filename():
+            continue
+        name = part.get_param('name', header='content-disposition')
+        if name:
+            payload = part.get_payload(decode=True) or b''
+            fields[name] = payload.decode('utf-8', 'replace').strip()
+    return fields
+
+
 def make_static_handler(web_root: Path, store_dir: Path, on_upload=None):
     renderings = store_dir / "renderings"
     root = web_root.resolve()
@@ -196,7 +213,11 @@ def make_static_handler(web_root: Path, store_dir: Path, on_upload=None):
                 self._json(400, {"ok": False, "error": "no PDF/HTML files in upload"})
                 return
             try:
-                result = on_upload(files)
+                fields = _parse_fields(body, ctype)
+            except Exception:
+                fields = {}
+            try:
+                result = on_upload(files, fields)
             except Exception as exc:
                 self._json(500, {"ok": False, "error": f"processing failed: {exc}"})
                 return
@@ -228,16 +249,30 @@ def serve_static(web_root: Path, store_dir: Path, port: int = 8000,
         from .pipeline import run_ingestion
         from .export_ui import export as _export_ui
 
-        def on_upload(files):
+        def on_upload(files, fields=None):
+            fields = fields or {}
             imports_dir.mkdir(parents=True, exist_ok=True)
             saved = []
+            overrides = {}
             for filename, data in files:
-                # Store under a safe, flattened name inside imports/.
+                # Store under a safe, flattened name inside the uploads folder.
                 safe = Path(filename).name
                 dest = imports_dir / safe
                 dest.write_bytes(data)
                 saved.append(safe)
-            stats = run_ingestion(csv, corpus, store_dir, uploads_dir=imports_dir)
+                # Map user-supplied metadata to the uploaded doc id (UP-<stem>).
+                doc_id = 'UP-' + Path(safe).stem
+                ov = {}
+                if fields.get('title'):
+                    ov['title'] = fields['title']
+                if fields.get('date'):
+                    ov['date'] = fields['date']
+                if fields.get('name'):
+                    ov['author'] = fields['name']
+                if ov:
+                    overrides[doc_id] = ov
+            stats = run_ingestion(csv, corpus, store_dir, uploads_dir=imports_dir,
+                                  upload_overrides=overrides)
             _export_ui(store_dir, web_root / "documents.js")
             return {"saved": saved, "indexed": stats["indexed"],
                     "uploaded": stats.get("uploaded", 0)}

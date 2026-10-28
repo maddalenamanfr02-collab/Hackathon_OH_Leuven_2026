@@ -198,6 +198,59 @@ get('upload-btn').addEventListener('click', async () => {
   }
 });
 
+// --- Upload section: colleague's UploadController + backend adapter ----------
+// Reuses UploadController.validateMetadata (name/title/date rules) from the
+// "Upload Function" module, but its save adapter posts to /api/upload so the
+// file lands in upload/ and is indexed, instead of a local-folder write.
+
+(function initUpload() {
+  const form = get('upload-form');
+  if (!form || typeof UploadController === 'undefined') return;
+
+  const statusEl = get('up-status');
+  const submitBtn = get('up-submit');
+
+  // Adapter: send the file + metadata to the backend; resolve on success.
+  const uploader = UploadController.createUploadController(async ({ file, metadata }) => {
+    const data = new FormData();
+    data.append('files', file, file.name);
+    data.append('name', metadata.name);
+    data.append('title', metadata.title);
+    data.append('date', metadata.date);
+    const res = await fetch('/api/upload', { method: 'POST', body: data });
+    const payload = await res.json();
+    if (!res.ok || !payload.ok) throw new Error(payload.error || `HTTP ${res.status}`);
+    return payload;
+  });
+
+  form.addEventListener('input', () => { statusEl.textContent = ''; });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const values = Object.fromEntries(new FormData(form));
+    const file = form.elements.namedItem('file').files[0];
+
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Validating\u2026';
+    try {
+      const outcome = await uploader.upload(file, {
+        name: values.name, title: values.title, date: values.date,
+      });
+      if (!outcome.ok) {
+        statusEl.textContent = Object.values(outcome.errors).join(' ');
+        submitBtn.disabled = false;
+        return;
+      }
+      statusEl.textContent =
+        `Saved and indexed. The library now holds ${outcome.result.indexed} documents. Reloading\u2026`;
+      setTimeout(() => window.location.reload(), 1200);
+    } catch (error) {
+      statusEl.textContent = `Upload failed: ${error.message}`;
+      submitBtn.disabled = false;
+    }
+  });
+})();
+
 // --- Initial render ----------------------------------------------------------
 buildFilters();
 renderSearch();

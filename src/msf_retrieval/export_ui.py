@@ -32,14 +32,15 @@ def build_records(store_dir: Path) -> list[dict]:
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
         "SELECT d.id, d.genre, d.language, d.location, d.date, d.author, "
-        "d.keywords, d.sensitivity_label, d.is_authoritative, "
+        "d.keywords, d.sensitivity_label, d.is_authoritative, d.title AS stored_title, "
         "(SELECT searchable_text FROM documents_fts f WHERE f.id = d.id) AS text "
         "FROM documents d WHERE d.sensitivity_label != 'restricted'").fetchall()
     records = []
     for r in rows:
         lang = r["language"] if r["language"] in _KNOWN_LANGS else "und"
         keywords = json.loads(r["keywords"] or "[]")
-        title = f'{r["genre"]} — {r["location"]} ({r["date"]})'
+        stored = (r["stored_title"] or "").strip() if "stored_title" in r.keys() else ""
+        title = stored or f'{r["genre"]} — {r["location"]} ({r["date"]})'
         records.append({
             "id": r["id"],
             "title": title,

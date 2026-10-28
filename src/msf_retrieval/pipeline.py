@@ -10,10 +10,12 @@ from .enrich import HeuristicEnricher
 
 def run_ingestion(source_csv: Path, corpus_root: Path, store_dir: Path,
                   enricher=None, limit: int | None = None,
-                  uploads_dir: Path | None = None) -> dict:
+                  uploads_dir: Path | None = None,
+                  upload_overrides: dict | None = None) -> dict:
     from . import store as store_mod  # local import to avoid cycles
 
     enricher = enricher or HeuristicEnricher()
+    upload_overrides = upload_overrides or {}
     ing = ingest.ingest(source_csv, corpus_root)
 
     docs = ing.ingested[:limit] if limit else ing.ingested
@@ -35,17 +37,22 @@ def run_ingestion(source_csv: Path, corpus_root: Path, store_dir: Path,
     for doc in all_docs:
         suggestion = enricher.enrich(doc.id, doc.searchable_text, doc.source_row)
         is_upload = doc.id.startswith('UP-')
+        ov = dict(upload_overrides.get(doc.id, {})) if is_upload else {}
         if is_upload:
-            # Guarantee uploaded files are indexable: fill required fields.
+            # Guarantee uploaded files are indexable: fill required fields,
+            # letting any user-supplied overrides (date/author) take priority.
             suggestion.setdefault('location', suggestion.get('location') or 'Uploaded')
-            suggestion['date'] = suggestion.get('date') or today
-            suggestion['author'] = suggestion.get('author') or 'Uploaded'
-        outcome = metadata.build(doc.id, doc.source_row, suggestion)
+            suggestion['date'] = ov.get('date') or suggestion.get('date') or today
+            suggestion['author'] = ov.get('author') or suggestion.get('author') or 'Uploaded'
+        outcome = metadata.build(doc.id, doc.source_row, suggestion,
+                                 overrides={k: v for k, v in ov.items() if k in ('date', 'author')})
         if outcome.rejected:
             rejections.extend(asdict(e) for e in outcome.rejection_errors)
             continue
         rec = outcome.record
         rec.text_source = doc.text_source
+        if ov.get('title'):
+            rec.title = ov['title']
         records.append(rec)
         texts[rec.id] = doc.searchable_text
         if doc.rendering_path:
