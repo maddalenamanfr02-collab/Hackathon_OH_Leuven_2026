@@ -60,12 +60,12 @@ function documentCard(record) {
   const title = document.createElement('h3');
   title.dir = 'auto';
   if (record.id) {
-    const a = document.createElement('a');
-    a.href = `/doc/${encodeURIComponent(record.id)}`;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.textContent = record.title || 'Title unavailable';
-    title.append(a);
+    const link = document.createElement('a');
+    link.href = `/doc/${encodeURIComponent(record.id)}`;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = record.title || 'Title unavailable';
+    title.append(link);
   } else {
     title.textContent = record.title || 'Title unavailable';
   }
