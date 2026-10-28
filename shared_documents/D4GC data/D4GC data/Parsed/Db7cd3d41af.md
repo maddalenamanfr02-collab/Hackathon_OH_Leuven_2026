@@ -1,0 +1,15 @@
+People in parts of West Darfur state, Sudan, have been left without all essential healthcare services after a fresh wave of violence started on 24 April around Kreneik town, with fighting reported in El Genina. In both locations, teams from Médecins Sans Frontières (MSF) supported the two main health facilities. Four days after the attacks, the situation remains fragile and tense, and our teams continue to hear the occasional shots being fired.
+
+Violence and shooting also took place within healthcare facilities that we support. Three hospital staff were killed in the MSF supported hospital in Kreneik. Numerous patients and staff fled in fear for their lives. Our team was informed that all patients had fled; including mothers who had their children on oxygen, interrupting their treatment and fleeing with them.
+
+“The inpatient department was full of patients, as well as the outpatient department and triage area,” says Emily Wambugu, MSF Project Medical Referent working in El Geneina Teaching Hospital at the time of the attack. “There were approximately 200 people waiting for consultations.”
+
+Insecurity has spread over recent months to different parts of West Darfur, making it extremely difficult for MSF to assist communities who have been displaced and affected by the recurrent attacks. The most recent violence that started in Kreneik has once again led terrified families to flee from makeshift settlement to makeshift settlement, in a desperate search for safety.
+
+“It is stressful, because when you think about the hospital and all the lives we have been saving every day, very desperate children coming for hospitalisation, and now we are not able to treat anyone of them,” says Wambugu. “It’s not easy for us, but there is nothing we can do, as we still feel it is not safe to move out and move to the hospital.”
+
+MSF runs different projects in West Darfur state. Until the most recent attack, we provided humanitarian assistance and healthcare services to both internally displaced and local communities. We ran fixed and mobile clinics in and around El Geneina town, and supported the El Geneina Teaching Hospital and the main healthcare facility in Kreneik town.
+
+An MSF team has since been able to assess the status of some healthcare clinics, and visited several gathering sites with newly displaced families that had run for their lives from the fighting inside El Geneina. We are closely following the security situation to restart medical activities and to adapt the movement of mobile clinics to new sites where people are now sheltering, to provide much needed medical care and humanitarian assistance as soon as it is safe to do so.
+
+MSF has been working in Sudan since 1978. In recent years our operations have focused on Khartoum, Gedaref, Blue Nile, Kassala, East Darfur, West Darfur, South and Central Darfur states, with emergency teams launching interventions in other areas as needed.

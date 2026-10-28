@@ -1,0 +1,25 @@
+- MSF teams in northwest Nigeria are witnessing – and treating – a growing malnutrition crisis, with thousands of kids’ lives at stake.
+- The crisis remains largely ignored, with the UN and donors overlooking the urgent needs of the northwest.
+- MSF urges UN and international agencies and donors to immediately scale up their funding and response support to the crisis in northwest Nigeria.
+
+ABUJA: A growing, yet largely ignored, malnutrition crisis is unfolding in northwest Nigeria, which threatens the lives of tens of thousands of children, Médecins Sans Frontières has warned. Since January, MSF teams, working in partnership with Nigerian health authorities in five northwestern states, have already treated more than 50,000 children with acute malnutrition, including 7,000 who required hospital care. MSF fears that the situation will soon become untenable without increased lifesaving humanitarian support.
+
+“We’re getting ready to treat up to 100,000 malnourished children this year in our nutrition programme in Katsina state alone, and we have expanded our response in Kebbi, Sokoto, Zamfara and Kano states,” said Michel-Olivier Lacharite, head of MSF emergency operations. “The hunger gap has begun, and the peak of malaria transmission which would further deteriorate the health and nutritional status of children is yet to come.”
+
+“Despite our calls in recent months to both humanitarian organisations and authorities to scale up medical activities, we have not seen the mobilisation needed to avert a devastating nutrition crisis,” said Lacharite. “Acknowledging the acute needs of these children is long overdue, and we strongly urge making lifesaving support a priority now.”
+
+Acknowledging the acute needs of these children is long overdue, and we strongly urge making lifesaving support a priority now.
+
+Michel-Olivier Lacharite, head of MSF emergency operations
+
+In the area of Gummi, Zamfara state, MSF teams conducted a screening of more than 36,000 children under five years old in June, following a nutrition alert. The results were alarming, as more than half the children were found to be malnourished. Of the total screened children, almost a quarter were severely malnourished and in need of urgent medical care. MSF, in cooperation with the authorities, is immediately launching an emergency response in the area.
+
+In Katsina, the teams quickly had to increase their inpatient capacity from 100 to nearly 280 beds in the last few weeks, but the influx of malnourished children was so significant that restricted admission criteria had to be introduced for some of the treatment centres. In Kebbi, where MSF runs an inpatient and two outpatient facilities, about 1,500 malnourished children have been treated since March.
+
+In this chronically food-insecure region, escalating levels of violence have pushed many communities to their limits, including about 500,000 people forced to flee from home.IOM Displacement Tracking Matrix, December 2021 In recent years, armed groups that are locally referred to as ‘bandits’ have intensified attacks, killings, kidnappings, lootings and sexual violence. Many people cannot farm, cattle are stolen, and markets and trade are disrupted amidst soaring staple food prices – which remain above the five-year average in most Nigerian marketsFamine Early Warning System Network (Fews Net) – Nigeria: Key message update, May 2022 – in an already fragile health context.
+
+If the current humanitarian assistance lags far behind in northwest Nigeria, that’s partly because the UN have failed to include the region in its humanitarian response plan for the country for the current year, which primarily focuses on the critical situation in the northeast. As a result, many organisations are struggling to follow up on assessments and secure funding to implement lifesaving support in northwest Nigeria, despite the known acute needs.
+
+“The plight of malnourished children in northwest Nigeria cannot continue to be neglected,” said Froukje Pelsma, MSF head of mission in Nigeria. “International donors and agencies, including UNICEF and the World Food Program, must increase their support to health facilities to provide communities with access to treatment, in collaboration with the Nigerian authorities who must contribute as well.”
+
+While fighting against malnutrition in Zamfara since 2015, MSF has provided additional capacity in Katsina, Kebbi, Sokoto, Zamfara and Kano states in 2021 and 2022. Today, MSF is running 25 outpatient and 8 inpatient malnutrition services across the five states, and MSF teams treated close to 31,000 children with severe acute malnutrition in 2021. MSF also recently raised the alarm on the situation in Maiduguri, Borno state, where our inpatient malnutrition centre is overwhelmed with high numbers of patients – 2,199 children from January to June, representing a 50 per cent increase compared to the same period last year.

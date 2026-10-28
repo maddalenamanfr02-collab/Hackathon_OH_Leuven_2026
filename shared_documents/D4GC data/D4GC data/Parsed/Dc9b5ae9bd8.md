@@ -1,0 +1,17 @@
+As prematurely born babies fight for their lives, medical teams in Gaza, Palestine, lack essential equipment such as ultrasounds, incubators, and even premature infant formula, to keep them alive. Dr Joanne Perry, our medical team leader, shares her experience treating premature babies in Al-Helou hospital’s neonatal intensive care unit (NICU), in northern Gaza.
+
+It started with two babies sharing one incubator – this is already completely unacceptable and shocking to see. Then it increased to three, and last week we saw five babies in one incubator. With all the attacks on healthcare facilities, today there are just 36 incubators in northern Gaza, compared to 126 before October 2023.
+
+Having several babies sharing one incubator increases their chances of infection. The immune systems of newborns, especially premature ones, are not yet developed. To support the neurodevelopment of premature babies, we use rolled blankets or other soft materials to create a boundary around the infant, mimicking the supportive environment of the womb. This is called the nesting technique. This position helps stabilise the baby's posture, reduces excessive limb movements, and promotes physiological and behavioural stability. 
+
+One reason we are seeing so many premature babies is because of the deterioration of their mothers’ health. This is my third time in Gaza over the past year, what’s different now is that pregnant mothers are severely underweight, severely anaemic. This can contribute to complications during pregnancy – including premature labour. 
+
+Additionally, pregnant women are living in horrible conditions: in overcrowded shelters or tents, with almost no access to clean water for washing. Many have no access to prenatal care due to limited functioning facilities and repeated displacement. This means risky pregnancies often go undetected until complications arise – sometimes too late.
+
+We see premature births and babies born with health issues that might have been preventable with even the most basic monitoring, such as diagnosing pneumonia or cardiac abnormalities, which can be then successfully medicated. But we don’t have the equipment in the NICU (neonatal intensive care unit) – no ultrasounds, no x-rays, and often not even the blood tests we need.
+
+The medical team in Al-Helou faces endless challenges every day. Fuel comes on top of the list, as all of Gaza’s hospitals run on diesel generators. Fuel shortages lead to power cuts, which kills oxygen-dependent newborns in the NICU. Sadly, on Monday night (14 July 2025) a baby, who could have survived, was lost, because the power went out and therefore the oxygen supply was cut off.
+
+The lack of supplies is another major issue. They are so limited that we have to extend time between diaper changes, which can lead to rashes. We are always about to reach the end of the baby formula supply. We promote breastfeeding, and we’re proud to be a breastfeeding-friendly hospital, but in this situation, many mothers can’t stay to feed their babies every few hours – they often have to take care of the rest of their families, or don’t have enough money for transportation and need to walk back and forth for hours.
+
+It’s heartbreaking. Having a baby should be a moment of joy and hope - but now, for so many families in Gaza, it’s clouded by stress and fear. Despite all the obstacles, the team is working together with dwindling resources to provide the best care possible to these newborn babies.

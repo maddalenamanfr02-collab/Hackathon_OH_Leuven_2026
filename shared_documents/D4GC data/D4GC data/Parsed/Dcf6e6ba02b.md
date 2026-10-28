@@ -1,0 +1,9 @@
+En noviembre de 2017, en virtud de un acuerdo formal con el Ministerio de Salud, comenzamos a proporcionar atención psicológica y psiquiátrica a la población del país, así como a los solicitantes de asilo y refugiados que eran enviados a la isla en aplicación de la política australiana de tramitación “externalizada” de solicitudes.
+
+Quienes intentan llegar a Australia por mar son enviados a islas remotas del Pacífico, para que se procese allí su solicitud de asilo. Cuando comenzamos con nuestras actividades, muchas de estas personas llevaban más de cinco años en Nauru y habían perdido toda esperanza de reasentarse en cualquier otro lugar.
+
+Tras 11 meses de intervención, en octubre, sin previo aviso, el Gobierno de Nauru comunicó que los servicios de MSF no eran necesarios y que debían suspenderse en un plazo de 24 horas. Esta medida dejó a cientos de pacientes sin una atención que necesitaban.
+
+En diciembre, publicamos el informe ‘Desesperación infinita’, en el que demostrábamos la magnitud de la emergencia de salud mental en este país. En efecto, habíamos determinado que casi la mitad de nuestros pacientes nauruanos necesitaban tratamiento para la psicosis. Y que, entre los refugiados y solicitantes de asilo a los que atendimos, el 30% habían intentado suicidarse y el 60% lo habían considerado.
+
+Sorprendentemente, mientras que la mayoría de los pacientes nauruanos mejoraron con la atención de MSF, solo el 11% de los pacientes refugiados y solicitantes de asilo mejoraron, lo que demostró que hay una relación entre su contención por tiempo indefinido en la isla y el deterioro de su salud mental. Estas conclusiones impulsaron a MSF a exigir públicamente el fin de la política de tramitación en ultramar y la evacuación inmediata de los refugiados y solicitantes de asilo a un lugar seguro donde se les asegurara el acceso rápido a un reasentamiento permanente.
