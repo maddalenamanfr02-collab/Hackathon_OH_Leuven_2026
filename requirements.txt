@@ -1,0 +1,4 @@
+# Core runtime: standard library only — no packages required.
+# Optional extras for the full design:
+# boto3>=1.34         # Amazon Bedrock enrichment (one-time, ingestion stage)
+# hypothesis>=6.100   # property-based testing (replaces the stdlib harness)
