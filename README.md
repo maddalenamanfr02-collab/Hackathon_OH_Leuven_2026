@@ -4,7 +4,7 @@ Participants:
 - Maddalena Manfredi 
 - Kirti Jain
 - Thibault Ghekiere
-- 
+- Shuyang Lin
 
 ----
 
