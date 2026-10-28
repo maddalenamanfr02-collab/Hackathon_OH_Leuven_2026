@@ -3,25 +3,28 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Medecines Sans Frontiers Libraryy</title>
+    <title>Médecins Sans Frontières Library</title>
     <link rel="stylesheet" href="styles.css">
     <script src="documents.js" defer></script>
-    <script src="Upload Function/upload-controller.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
-    <a class="skip" href="#search">Skip to content</a>
-    <!-- Navigation preserves the inputs while moving between sections. -->
+    <a class="skip" href="#search-page">Skip to content</a>
+
     <header>
-      <div class="brand"><img class="brand-logo" src="medecins-sans-frontieres-logo-vector.svg" alt="Médecins Sans Frontières">Medecines Sans Frontiers Library</div>
+      <div class="brand">
+        <img class="brand-logo" src="medecins-sans-frontieres-logo-vector.svg" alt="Médecins Sans Frontières">
+        Médecins Sans Frontières Library
+      </div>
       <nav aria-label="Main">
-        <a href="#search">Search</a>
-        <a href="#import">Import</a>
-        <a href="#upload">Upload</a>
+        <a href="#" data-page="search"    class="nav-link active">Search</a>
+        <a href="#" data-page="upload"    class="nav-link">Upload</a>
+        <a href="#" data-page="sync"      class="nav-link">Synchronize</a>
       </nav>
     </header>
-    <main>
-      <!-- Search controls work against the collection supplied to app.js. -->
+
+    <!-- ═══════════════════════════════ SEARCH PAGE ═══════════════════════════ -->
+    <main id="search-page" class="page active-page">
       <section id="search">
         <h1>Find the information you need.</h1>
         <p class="muted">Browse your local collection of clinical guidance and research. Use the filters to narrow it down.</p>
@@ -32,7 +35,6 @@
             <button class="primary" type="submit">Search</button>
           </div>
         </form>
-        <!-- Horizontal filter bar: each control is a collapsible dropdown. -->
         <div class="filter-bar" id="filter-bar">
           <details class="dropdown">
             <summary>Location <span class="count" data-group="location"></span></summary>
@@ -58,44 +60,105 @@
           </div>
         </div>
       </section>
-      <!-- File selection is local; processing requires a connected service. -->
-      <section id="import">
-        <div class="eyebrow">Collection stewardship</div>
-        <h1>Add documents to your library.</h1>
-        <div class="panel">
-          <label class="field" for="files">Choose PDF or HTML documents</label>
-          <input id="files" type="file" accept=".pdf,.html,.htm" multiple>
-          <ul id="file-list"></ul>
-          <button id="upload-btn" class="primary" type="button" disabled>Upload and index</button>
-          <p id="upload-status" class="help" role="status">Select one or more PDF or HTML files to add them to your local library.</p>
-        </div>
-      </section>
-      <!-- Upload one document with explicit metadata (name/title/date). -->
+    </main>
+
+    <!-- ═══════════════════════════════ UPLOAD PAGE ═══════════════════════════ -->
+    <main id="upload-page" class="page">
       <section id="upload">
         <div class="eyebrow">Collection stewardship</div>
-        <h1>Upload a document with details.</h1>
-        <div class="panel">
-          <form id="upload-form">
+        <h1>Upload a document.</h1>
+        <p class="muted">Add a file to the local queue. It will become searchable after you <strong>Synchronize</strong>.</p>
+        <div class="panel" style="max-width:560px">
+          <form id="upload-form" novalidate>
+
             <label class="field" for="up-file">File</label>
             <input id="up-file" name="file" type="file" accept=".pdf,.html,.htm" required>
-            <p class="help">One PDF or HTML document, up to 20 MB.</p>
+            <p class="help">PDF or HTML, up to 20 MB.</p>
 
-            <label class="field" for="up-name">Name</label>
-            <input id="up-name" name="name" type="text" required>
+            <label class="field" for="up-author">Author</label>
+            <input id="up-author" name="author" type="text" placeholder="e.g. MSF" required>
 
             <label class="field" for="up-title">Title</label>
-            <input id="up-title" name="title" type="text" required>
+            <input id="up-title" name="title" type="text" placeholder="Document title" required>
 
-            <label class="field" for="up-date">Date</label>
-            <input id="up-date" name="date" type="date" min="1900-01-01" max="2099-12-31" required aria-describedby="up-date-help">
-            <p id="up-date-help" class="help">Recorded as YYYY-MM-DD.</p>
+            <!-- Date is set automatically to today — not shown to the user -->
+            <input id="up-date" name="date" type="hidden">
 
-            <button id="up-submit" class="primary" type="submit">Upload and index</button>
+            <div class="upload-actions">
+              <button id="up-submit" class="primary" type="submit">Add to upload queue</button>
+            </div>
           </form>
-          <p id="up-status" class="help" role="status">All three fields are required. The file is saved to the library and indexed for search.</p>
+          <p id="up-status" class="help" role="status" aria-live="polite">
+            Fill in Author and Title, then pick a file. The document will be queued locally and pushed to the library when you Synchronize.
+          </p>
+
+          <!-- Queue of files waiting to be synced -->
+          <div id="upload-queue-wrap" style="display:none">
+            <hr style="border:none;border-top:1px solid #e5dada;margin:20px 0">
+            <strong class="field" style="margin-top:0">Queued for next sync</strong>
+            <ul id="upload-queue" class="upload-queue-list"></ul>
+          </div>
         </div>
       </section>
     </main>
+
+    <!-- ═══════════════════════════════ SYNC PAGE ════════════════════════════ -->
+    <main id="sync-page" class="page">
+      <section id="sync">
+        <div class="eyebrow">Collection stewardship</div>
+        <h1>Synchronize your library.</h1>
+        <p class="muted">Push your queued uploads into the search index, and pull in any new documents added since your last sync.</p>
+
+        <div class="panel sync-panel">
+          <!-- Status row -->
+          <div class="sync-status-row">
+            <div>
+              <span class="field" style="margin-top:0">Last synchronization</span>
+              <span id="sync-last-time" class="sync-timestamp">Never synchronized</span>
+            </div>
+            <span id="sync-badge" class="sync-badge sync-badge--unknown">Unknown</span>
+          </div>
+
+          <hr class="sync-divider">
+
+          <!-- Outgoing: your queued uploads -->
+          <div class="sync-direction">
+            <div class="sync-direction-header">
+              <span class="sync-arrow sync-arrow--out">↑</span>
+              <div>
+                <strong>Your uploads waiting to be indexed</strong>
+                <p class="help" style="margin:2px 0 0">Files you queued that are not yet in the search collection.</p>
+              </div>
+              <span id="outgoing-count" class="sync-count">—</span>
+            </div>
+            <ul id="outgoing-list" class="sync-file-list" aria-label="Pending uploads"></ul>
+          </div>
+
+          <!-- Incoming: new files from others since last sync -->
+          <div class="sync-direction">
+            <div class="sync-direction-header">
+              <span class="sync-arrow sync-arrow--in">↓</span>
+              <div>
+                <strong>New documents available since last sync</strong>
+                <p class="help" style="margin:2px 0 0">Files added to the shared collection since you last synchronized.</p>
+              </div>
+              <span id="incoming-count" class="sync-count">—</span>
+            </div>
+            <ul id="incoming-list" class="sync-file-list" aria-label="Incoming files"></ul>
+          </div>
+
+          <hr class="sync-divider">
+
+          <div class="sync-actions">
+            <button id="sync-now" class="primary sync-btn" type="button">
+              <span class="sync-btn-icon" aria-hidden="true">⟳</span> Synchronize now
+            </button>
+            <span id="sync-progress" class="help sync-progress" aria-live="polite"></span>
+          </div>
+        </div>
+      </section>
+    </main>
+
     <footer>D4GC Field Library</footer>
   </body>
 </html>

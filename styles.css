@@ -496,3 +496,184 @@ footer {
   .dropdown-menu { position: static; width: 100%; }
   .filter-bar #clear-filters { margin-left: 0; }
 }
+
+/* ── Synchronize section ──────────────────────────────────────────────────── */
+.sync-panel { max-width: 720px; }
+
+.sync-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.sync-timestamp { font-size: 15px; color: #292525; }
+
+.sync-badge {
+  display: inline-block; padding: 5px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.sync-badge--ok      { background: #daf4e3; color: #286440; }
+.sync-badge--stale   { background: #f7edd3; color: #694b14; }
+.sync-badge--unknown { background: #eee8e8; color: #716363; }
+.sync-badge--syncing { background: #e3eeff; color: #1a4fa0; }
+
+.sync-divider { border: none; border-top: 1px solid #e5dada; margin: 20px 0; }
+
+.sync-direction { margin-bottom: 18px; }
+.sync-direction-header { display: flex; align-items: flex-start; gap: 14px; }
+
+.sync-arrow { font-size: 22px; font-weight: 700; line-height: 1.2; flex-shrink: 0; margin-top: 2px; }
+.sync-arrow--in  { color: #286440; }
+.sync-arrow--out { color: #1a4fa0; }
+
+.sync-count { margin-left: auto; font-size: 22px; font-weight: 700; color: #b80000; flex-shrink: 0; }
+
+.sync-file-list { list-style: none; margin: 10px 0 0 36px; padding: 0; }
+.sync-file-list li {
+  font-size: 13px; color: #6b5c5c; padding: 5px 0;
+  border-bottom: 1px solid #f0e8e8; display: flex; align-items: center; gap: 10px;
+}
+.sync-file-list li:last-child { border-bottom: none; }
+
+.sync-file-badge {
+  font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700; flex-shrink: 0;
+}
+.sync-file-badge--new     { background: #daf4e3; color: #286440; }
+.sync-file-badge--updated { background: #f7edd3; color: #694b14; }
+.sync-file-badge--local   { background: #e3eeff; color: #1a4fa0; }
+
+.sync-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+.sync-btn { display: flex; align-items: center; gap: 8px; padding: 12px 28px; }
+.sync-btn-icon { font-size: 18px; display: inline-block; transition: transform 0.5s; }
+.sync-btn.spinning .sync-btn-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.sync-progress { font-size: 14px; }
+
+@media (max-width: 600px) {
+  .sync-status-row { flex-direction: column; align-items: flex-start; }
+  .sync-direction-header { flex-wrap: wrap; }
+  .sync-count { margin-left: 0; }
+}
+
+/* ── Page tab system ────────────────────────────────────────────────────────── */
+/* Each <main class="page"> is hidden by default; only .active-page is shown.   */
+.page {
+  display: none;
+  max-width: 1232px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.page.active-page {
+  display: block;
+}
+
+/* Active nav link */
+nav a.active {
+  color: #b80000;
+  font-weight: 700;
+  border-bottom: 2px solid #b80000;
+  padding-bottom: 10px;
+}
+
+/* ── Upload queue list ───────────────────────────────────────────────────────── */
+.upload-actions {
+  margin-top: 20px;
+}
+
+.upload-queue-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.upload-queue-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0e8e8;
+  font-size: 14px;
+}
+
+.upload-queue-item:last-child {
+  border-bottom: none;
+}
+
+.upload-queue-meta {
+  color: #716363;
+  font-size: 12px;
+  flex: 1;
+}
+
+.upload-queue-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9c3b24;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.upload-queue-remove:hover {
+  background: #fbe5e5;
+}
+
+/* ── Sync panel (re-declared cleanly here) ────────────────────────────────── */
+.sync-panel { max-width: 720px; }
+
+.sync-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.sync-timestamp { font-size: 15px; color: #292525; }
+
+.sync-badge {
+  display: inline-block; padding: 5px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.sync-badge--ok      { background: #daf4e3; color: #286440; }
+.sync-badge--stale   { background: #f7edd3; color: #694b14; }
+.sync-badge--unknown { background: #eee8e8; color: #716363; }
+.sync-badge--syncing { background: #e3eeff; color: #1a4fa0; }
+
+.sync-divider { border: none; border-top: 1px solid #e5dada; margin: 20px 0; }
+
+.sync-direction { margin-bottom: 18px; }
+.sync-direction-header { display: flex; align-items: flex-start; gap: 14px; }
+.sync-arrow { font-size: 22px; font-weight: 700; line-height: 1.2; flex-shrink: 0; margin-top: 2px; }
+.sync-arrow--in  { color: #286440; }
+.sync-arrow--out { color: #1a4fa0; }
+.sync-count { margin-left: auto; font-size: 22px; font-weight: 700; color: #b80000; flex-shrink: 0; }
+
+.sync-file-list { list-style: none; margin: 10px 0 0 36px; padding: 0; }
+.sync-file-list li {
+  font-size: 13px; color: #6b5c5c; padding: 5px 0;
+  border-bottom: 1px solid #f0e8e8; display: flex; align-items: center; gap: 10px;
+}
+.sync-file-list li:last-child { border-bottom: none; }
+
+.sync-file-badge {
+  font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700; flex-shrink: 0;
+}
+.sync-file-badge--new     { background: #daf4e3; color: #286440; }
+.sync-file-badge--updated { background: #f7edd3; color: #694b14; }
+.sync-file-badge--local   { background: #e3eeff; color: #1a4fa0; }
+
+.sync-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.sync-btn { display: flex; align-items: center; gap: 8px; padding: 12px 28px; }
+.sync-btn-icon { font-size: 18px; display: inline-block; }
+.sync-btn.spinning .sync-btn-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.sync-progress { font-size: 14px; }
+
+@media (max-width: 800px) {
+  .page { padding: 32px 20px; }
+}
+@media (max-width: 600px) {
+  .sync-status-row { flex-direction: column; align-items: flex-start; }
+  .sync-direction-header { flex-wrap: wrap; }
+  .sync-count { margin-left: 0; }
+}
