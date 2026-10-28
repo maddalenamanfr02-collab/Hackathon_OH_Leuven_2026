@@ -243,7 +243,23 @@ def serve_static(web_root: Path, store_dir: Path, port: int = 8000,
                     "uploaded": stats.get("uploaded", 0)}
 
     ThreadingHTTPServer.allow_reuse_address = True
-    httpd = ThreadingHTTPServer(("127.0.0.1", port),
-                                make_static_handler(web_root, store_dir, on_upload))
+    handler = make_static_handler(web_root, store_dir, on_upload)
+    # If the chosen port is busy (e.g. a previous server is still running),
+    # fall back to the next few ports instead of crashing.
+    httpd = None
+    for candidate in range(port, port + 20):
+        try:
+            httpd = ThreadingHTTPServer(("127.0.0.1", candidate), handler)
+            port = candidate
+            break
+        except OSError as exc:
+            import errno
+            if exc.errno == errno.EADDRINUSE:
+                print(f"port {candidate} is in use, trying {candidate + 1}\u2026")
+                continue
+            raise
+    if httpd is None:
+        raise SystemExit(f"No free port found in range {port}-{port + 19}. "
+                         f"Stop old servers with: pkill -f 'msf_retrieval.cli serve'")
     print(f"MSF Library UI on http://127.0.0.1:{port}  (serving {web_root}, Ctrl+C to stop)")
     httpd.serve_forever()
