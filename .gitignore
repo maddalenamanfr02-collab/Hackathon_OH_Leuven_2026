@@ -2,4 +2,8 @@ __pycache__/
 *.pyc
 local_store/
 .DS_Store
-imports/
+
+# Uploaded files are runtime data; keep the folder, ignore its contents
+upload/*
+!upload/.gitkeep
+!upload/README.md

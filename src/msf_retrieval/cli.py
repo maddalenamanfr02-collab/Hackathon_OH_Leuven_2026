@@ -13,7 +13,7 @@ DEFAULT_CORPUS = Path("shared_documents/D4GC data/D4GC data")
 DEFAULT_CSV = Path("shared_documents/documentation.csv")
 DEFAULT_STORE = Path("local_store")
 DEFAULT_UI_DATA = Path("documents.js")
-DEFAULT_IMPORTS = Path("imports")
+DEFAULT_IMPORTS = Path("upload")  # storage folder for user-uploaded files
 
 
 def main(argv=None) -> int:

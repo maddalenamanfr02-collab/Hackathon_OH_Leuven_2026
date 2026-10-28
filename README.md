@@ -58,6 +58,13 @@ Launch the minimal web UI (then open http://127.0.0.1:8000):
 python3 -m src.msf_retrieval.cli serve --store local_store --port 8000
 ```
 
+## Uploading documents
+
+Use the **Import** section of the web UI to add your own PDF/HTML files. Uploaded
+files are stored in the `upload/` folder, then ingested, enriched, and indexed so
+they appear in search alongside the main corpus. The folder is kept in the repo via
+`.gitkeep`; the uploaded files themselves are git-ignored (runtime data).
+
 ## Tests
 
 Property-based tests (stdlib harness; Hypothesis-ready) covering the design's
@@ -81,7 +88,9 @@ python3 -m unittest tests.test_properties -v
 | `src/msf_retrieval/search.py` | Query + metadata filters + ranking |
 | `src/msf_retrieval/pipeline.py` | End-to-end ingestion orchestrator |
 | `src/msf_retrieval/web.py` | Minimal zero-dependency web UI |
-| `src/msf_retrieval/cli.py` | `build` / `search` / `verify` / `serve` commands |
+| `src/msf_retrieval/export_ui.py` | Exports documents.js for the static frontend |
+| `src/msf_retrieval/cli.py` | `build` / `search` / `verify` / `serve` / `export` commands |
+| `upload/` | Storage for user-uploaded documents (git-ignored contents) |
 
 ## Data
 
