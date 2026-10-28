@@ -157,25 +157,45 @@ document.addEventListener('click', (event) => {
   document.querySelectorAll('.filter-bar details[open]').forEach((d) => { d.open = false; });
 });
 
-// --- Documents tab: filter managed documents by title ------------------------
+// --- Import tab: select files, upload to the backend, reindex ----------------
 
-get('find').addEventListener('input', () => {
-  const query = get('find').value.trim().toLocaleLowerCase();
-  const matches = documents.filter((record) => (record.title || '').toLocaleLowerCase().includes(query));
-  get('document-list').replaceChildren(...matches.map(documentCard));
-  get('documents-status').textContent = !documents.length
-    ? 'No documents connected.'
-    : `${matches.length} documents found.`;
-});
+let selectedFiles = [];
 
-// Import tab: show the user's actual selection; do not claim files were processed.
 get('files').addEventListener('change', (event) => {
-  const rows = Array.from(event.target.files, (file) => {
+  selectedFiles = Array.from(event.target.files);
+  const rows = selectedFiles.map((file) => {
     const row = document.createElement('li');
-    row.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB · Not processed`;
+    row.textContent = `${file.name} \u00b7 ${(file.size / 1024).toFixed(1)} KB`;
     return row;
   });
   get('file-list').replaceChildren(...rows);
+  get('upload-btn').disabled = selectedFiles.length === 0;
+  get('upload-status').textContent = selectedFiles.length
+    ? `${selectedFiles.length} file(s) ready to upload.`
+    : 'Select one or more PDF or HTML files to add them to your local library.';
+});
+
+get('upload-btn').addEventListener('click', async () => {
+  if (!selectedFiles.length) return;
+  const btn = get('upload-btn');
+  btn.disabled = true;
+  get('upload-status').textContent = 'Uploading and indexing\u2026';
+
+  const form = new FormData();
+  for (const file of selectedFiles) form.append('files', file, file.name);
+
+  try {
+    const res = await fetch('/api/upload', { method: 'POST', body: form });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    get('upload-status').textContent =
+      `Added ${data.uploaded} document(s). The library now holds ${data.indexed} indexed documents. Reloading\u2026`;
+    // Reload so the regenerated documents.js is picked up and search shows them.
+    setTimeout(() => window.location.reload(), 1200);
+  } catch (err) {
+    get('upload-status').textContent = `Upload failed: ${err.message}`;
+    btn.disabled = false;
+  }
 });
 
 // --- Initial render ----------------------------------------------------------

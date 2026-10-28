@@ -122,7 +122,23 @@ _STATIC_TYPES = {
 }
 
 
-def make_static_handler(web_root: Path, store_dir: Path):
+def _parse_multipart(body: bytes, content_type: str):
+    """Yield (filename, data) for each file part in a multipart/form-data body.
+
+    Uses the stdlib email parser (cgi.FieldStorage was removed in Python 3.13).
+    """
+    import email
+    from email.policy import default as default_policy
+
+    header = f"Content-Type: {content_type}\r\nMIME-Version: 1.0\r\n\r\n".encode()
+    msg = email.message_from_bytes(header + body, policy=default_policy)
+    for part in msg.iter_parts() if msg.is_multipart() else []:
+        filename = part.get_filename()
+        if filename:
+            yield filename, part.get_payload(decode=True) or b""
+
+
+def make_static_handler(web_root: Path, store_dir: Path, on_upload=None):
     renderings = store_dir / "renderings"
     root = web_root.resolve()
 
@@ -148,7 +164,6 @@ def make_static_handler(web_root: Path, store_dir: Path):
 
             rel = path.lstrip("/") or "index.html"
             target = (root / rel).resolve()
-            # Prevent path traversal outside the web root.
             if root not in target.parents and target != root:
                 self._send(403, b"Forbidden", "text/plain")
                 return
@@ -158,6 +173,35 @@ def make_static_handler(web_root: Path, store_dir: Path):
             ctype = _STATIC_TYPES.get(target.suffix.lower(), "application/octet-stream")
             self._send(200, target.read_bytes(), ctype)
 
+        def do_POST(self):
+            parsed = urllib.parse.urlparse(self.path)
+            if parsed.path != "/api/upload" or on_upload is None:
+                self._send(404, b"Not found", "text/plain")
+                return
+            ctype = self.headers.get("Content-Type", "")
+            length = int(self.headers.get("Content-Length", 0) or 0)
+            if "multipart/form-data" not in ctype or length <= 0:
+                self._json(400, {"ok": False, "error": "expected multipart upload"})
+                return
+            body = self.rfile.read(length)
+            try:
+                files = list(_parse_multipart(body, ctype))
+            except Exception as exc:  # malformed upload
+                self._json(400, {"ok": False, "error": f"could not parse upload: {exc}"})
+                return
+            allowed = {".pdf", ".html", ".htm"}
+            files = [(fn, data) for fn, data in files
+                     if Path(fn).suffix.lower() in allowed and data]
+            if not files:
+                self._json(400, {"ok": False, "error": "no PDF/HTML files in upload"})
+                return
+            try:
+                result = on_upload(files)
+            except Exception as exc:
+                self._json(500, {"ok": False, "error": f"processing failed: {exc}"})
+                return
+            self._json(200, {"ok": True, **result})
+
         def _send(self, code, data, ctype):
             self.send_response(code)
             self.send_header("Content-Type", ctype)
@@ -165,14 +209,41 @@ def make_static_handler(web_root: Path, store_dir: Path):
             self.end_headers()
             self.wfile.write(data)
 
+        def _json(self, code, payload):
+            self._send(code, json.dumps(payload).encode("utf-8"),
+                       "application/json; charset=utf-8")
+
     return Handler
 
 
-def serve_static(web_root: Path, store_dir: Path, port: int = 8000) -> None:
+def serve_static(web_root: Path, store_dir: Path, port: int = 8000,
+                 imports_dir: Path | None = None, csv: Path | None = None,
+                 corpus: Path | None = None) -> None:
     res = verify_integrity(store_dir)
     if not res.ok:
         raise SystemExit(f"Local_Store failed integrity check: {res.message}")
+
+    on_upload = None
+    if imports_dir is not None and csv is not None and corpus is not None:
+        from .pipeline import run_ingestion
+        from .export_ui import export as _export_ui
+
+        def on_upload(files):
+            imports_dir.mkdir(parents=True, exist_ok=True)
+            saved = []
+            for filename, data in files:
+                # Store under a safe, flattened name inside imports/.
+                safe = Path(filename).name
+                dest = imports_dir / safe
+                dest.write_bytes(data)
+                saved.append(safe)
+            stats = run_ingestion(csv, corpus, store_dir, uploads_dir=imports_dir)
+            _export_ui(store_dir, web_root / "documents.js")
+            return {"saved": saved, "indexed": stats["indexed"],
+                    "uploaded": stats.get("uploaded", 0)}
+
     ThreadingHTTPServer.allow_reuse_address = True
-    httpd = ThreadingHTTPServer(("127.0.0.1", port), make_static_handler(web_root, store_dir))
+    httpd = ThreadingHTTPServer(("127.0.0.1", port),
+                                make_static_handler(web_root, store_dir, on_upload))
     print(f"MSF Library UI on http://127.0.0.1:{port}  (serving {web_root}, Ctrl+C to stop)")
     httpd.serve_forever()

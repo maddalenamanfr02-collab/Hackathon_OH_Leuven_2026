@@ -113,3 +113,37 @@ def ingest(source_csv: Path, corpus_root: Path) -> IngestionResult:
                 text_source=text_source, rendering_path=original))
 
     return result
+
+
+def ingest_folder(uploads_dir: Path) -> IngestionResult:
+    """Ingest loose uploaded PDF/HTML files (no Source_CSV).
+
+    Each file becomes a Document whose id is derived from its filename stem,
+    prefixed with 'UP-' to avoid collisions with the main corpus. Searchable
+    text is extracted from the file directly (there is no parsed markdown).
+    """
+    result = IngestionResult()
+    if not uploads_dir.exists():
+        return result
+    seen: set[str] = set()
+    for path in sorted(uploads_dir.iterdir()):
+        if not path.is_file() or path.suffix.lower() not in (".pdf", ".html", ".htm"):
+            continue
+        doc_id = "UP-" + path.stem
+        if doc_id in seen:
+            result.errors.append(IngestionError(doc_id, "duplicate_id",
+                                                 "uploaded filename repeated"))
+            continue
+        seen.add(doc_id)
+        ex = extract.extract(path)
+        if not ex.ok:
+            result.errors.append(IngestionError(doc_id, "extraction_failure",
+                                                 ex.failure_cause or ""))
+            continue
+        result.ingested.append(IngestedDocument(
+            id=doc_id,
+            source_row={"id": doc_id, "genre": "Uploaded Document", "language": "und"},
+            searchable_text=ex.text,
+            text_source="extracted_original",
+            rendering_path=path))
+    return result

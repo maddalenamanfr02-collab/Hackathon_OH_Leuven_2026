@@ -16,7 +16,6 @@
       <nav aria-label="Main">
         <a href="#search">Search</a>
         <a href="#import">Import</a>
-        <a href="#documents">Documents</a>
       </nav>
     </header>
     <main>
@@ -65,19 +64,8 @@
           <label class="field" for="files">Choose PDF or HTML documents</label>
           <input id="files" type="file" accept=".pdf,.html,.htm" multiple>
           <ul id="file-list"></ul>
-          <p class="help">Local processing is unavailable until a document service is connected. Selected files are not uploaded.</p>
-          <button class="primary" disabled>Start processing</button>
-        </div>
-      </section>
-      <!-- An empty collection has no editable record selected. -->
-      <section id="documents">
-        <div class="eyebrow">Collection stewardship</div>
-        <h1>Keep your collection useful.</h1>
-        <div class="panel">
-          <label class="field" for="find">Find a managed document</label>
-          <input id="find" type="search" placeholder="Filter by title">
-          <p id="documents-status" role="status">No documents connected.</p>
-          <div id="document-list"></div>
+          <button id="upload-btn" class="primary" type="button" disabled>Upload and index</button>
+          <p id="upload-status" class="help" role="status">Select one or more PDF or HTML files to add them to your local library.</p>
         </div>
       </section>
     </main>

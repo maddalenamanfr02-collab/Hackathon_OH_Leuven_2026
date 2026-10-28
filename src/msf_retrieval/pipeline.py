@@ -9,7 +9,8 @@ from .enrich import HeuristicEnricher
 
 
 def run_ingestion(source_csv: Path, corpus_root: Path, store_dir: Path,
-                  enricher=None, limit: int | None = None) -> dict:
+                  enricher=None, limit: int | None = None,
+                  uploads_dir: Path | None = None) -> dict:
     from . import store as store_mod  # local import to avoid cycles
 
     enricher = enricher or HeuristicEnricher()
@@ -17,13 +18,28 @@ def run_ingestion(source_csv: Path, corpus_root: Path, store_dir: Path,
 
     docs = ing.ingested[:limit] if limit else ing.ingested
 
+    uploaded = []
+    if uploads_dir is not None:
+        up = ingest.ingest_folder(uploads_dir)
+        ing.errors.extend(up.errors)
+        uploaded = up.ingested
+    all_docs = list(docs) + list(uploaded)
+
     records = []
     texts: dict[str, str] = {}
     renderings: dict[str, Path] = {}
     rejections = []
 
-    for doc in docs:
+    import datetime as _dt
+    today = _dt.date.today().isoformat()
+    for doc in all_docs:
         suggestion = enricher.enrich(doc.id, doc.searchable_text, doc.source_row)
+        is_upload = doc.id.startswith('UP-')
+        if is_upload:
+            # Guarantee uploaded files are indexable: fill required fields.
+            suggestion.setdefault('location', suggestion.get('location') or 'Uploaded')
+            suggestion['date'] = suggestion.get('date') or today
+            suggestion['author'] = suggestion.get('author') or 'Uploaded'
         outcome = metadata.build(doc.id, doc.source_row, suggestion)
         if outcome.rejected:
             rejections.extend(asdict(e) for e in outcome.rejection_errors)
@@ -52,9 +68,10 @@ def run_ingestion(source_csv: Path, corpus_root: Path, store_dir: Path,
     manifest = store_mod.build_store(store_dir, records, texts, renderings, reports)
 
     return {
-        "ingested": ing.ingested_count,
+        "ingested": ing.ingested_count + len(uploaded),
         "failed": ing.failed_count,
         "indexed": len(records),
+        "uploaded": len(uploaded),
         "rejected": len(rejections),
         "warnings": len(report.warnings),
         "run_version": manifest["run_version"],
