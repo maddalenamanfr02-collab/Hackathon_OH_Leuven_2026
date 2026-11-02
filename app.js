@@ -25,6 +25,14 @@ const checked = (name) => Array.from(
   (el) => el.value,
 );
 
+// Show a warning banner if the page is opened as a file:// URL.
+(function () {
+  if (window.location.protocol === 'file:') {
+    const el = document.getElementById('server-warning');
+    if (el) el.style.display = 'block';
+  }
+})();
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Tab / page switching  (no scroll, no hash navigation)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -175,7 +183,10 @@ get('filter-bar').addEventListener('change', () => { page = 0; renderSearch(); }
 
 get('clear-filters').addEventListener('click', () => {
   document.querySelectorAll('.filter-bar input[type="checkbox"]').forEach((i) => { i.checked = false; });
+  get('query').value = '';
+  submittedQuery = '';
   page = 0;
+  updateCounts();
   renderSearch();
 });
 

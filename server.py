@@ -510,6 +510,42 @@ class Handler(BaseHTTPRequestHandler):
             self._json(200, api_documents())
             return
 
+        # Serve original document renderings by id: /doc/<id>
+        if path.startswith("/doc/"):
+            doc_id = path[len("/doc/"):]
+
+            # Strategy 1: look up the original filename from the sync_log
+            # (reliable for all uploaded docs regardless of filename).
+            if DB_PATH.exists():
+                try:
+                    _conn = sqlite3.connect(DB_PATH)
+                    row = _conn.execute(
+                        "SELECT filename FROM sync_log WHERE doc_id = ? ORDER BY id DESC LIMIT 1",
+                        (doc_id,)
+                    ).fetchone()
+                    _conn.close()
+                    if row:
+                        candidate = ORIGINAL_DIR / row[0]
+                        if candidate.is_file():
+                            ctype = ("application/pdf" if candidate.suffix.lower() == ".pdf"
+                                     else "text/html; charset=utf-8")
+                            self._send(200, candidate.read_bytes(), ctype)
+                            return
+                except Exception:
+                    pass
+
+            # Strategy 2: try the id directly as a filename stem
+            # (works for the original corpus: id == stem, e.g. D00a47577ef).
+            for ext in (".pdf", ".html", ".htm"):
+                candidate = ORIGINAL_DIR / f"{doc_id}{ext}"
+                if candidate.is_file():
+                    ctype = "application/pdf" if ext == ".pdf" else "text/html; charset=utf-8"
+                    self._send(200, candidate.read_bytes(), ctype)
+                    return
+
+            self._send(404, b"Document not found in Original folder.", "text/plain; charset=utf-8")
+            return
+
         # Static file
         rel = path.lstrip("/") or "index.html"
         target = (ROOT / rel).resolve()
